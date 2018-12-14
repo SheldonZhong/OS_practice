@@ -49,15 +49,17 @@ int main(void)
     // and child sends back to parent using cap_pipe
     if (pid == 0)
     {
+        // receives from parent
         close(fd[WRITE_END]);
-
         read(fd[READ_END], read_msg, BUFFER_SIZE);
+
         printf("child reads: %s\n", read_msg);
         re_cap(&read_msg[0]);
         printf("child reverses: %s\n", read_msg);
 
         close(fd[READ_END]);
 
+        // send back to parent
         close(fd_cap[READ_END]);
         write(fd_cap[WRITE_END], read_msg, BUFFER_SIZE);
         close(fd_cap[WRITE_END]);
