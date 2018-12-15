@@ -10,18 +10,20 @@ int val = 5;
 int main()
 {
 	pid_t pid;
-	
+
 	pid = fork();
-	
-	if (pid == 0) {
-        val += 15;
-        printf("CHILD: %d \n", val);
-        // return 0;
+
+	if (pid == 0)
+	{
+		val += 15;
+		printf("CHILD: %d \n", val);
+		// return 0;
 	}
-	else if (pid > 0 ) {
+	else if (pid > 0)
+	{
 		wait(NULL);
 		printf("PARENT: %d \n", val);
-        // return 0;
+		// return 0;
 	}
 	return 0;
 }
