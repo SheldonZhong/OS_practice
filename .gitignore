@@ -3,3 +3,11 @@
 .vscode
 *.class
 *.log
+
+*.cmd
+*.symvers
+*.order
+*.ko
+*.mod.c
+*.mk
+.tmp*
