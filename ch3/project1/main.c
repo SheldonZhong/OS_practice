@@ -41,13 +41,11 @@ int main(void)
             {
                 printf("\t%d %s\n", i + 1, hist[i]);
             }
-            // printf("HISTORY\n");
             continue;
         }
         len = strlen(&line[0]);
         if (line[0] == '!' && (len > 1))
         {
-            // printf("Special handle\n");
             if (line[1] == '!')
             {
                 strcpy(&line[0], hist[histc - 1]);
@@ -70,13 +68,11 @@ int main(void)
                 }
             }
         }
-        // printf("Gets line: %s\n", &line[0]);
+
         // save history
         if (histc < (HIST_SIZE))
         {
-            // printf("Saving history %d %s\n", histc, &line[0]);
             strcpy(hist[histc], &line[0]);
-            // printf("Saved history %s\n", hist[histc]);
             histc++;
             hist[histc] = malloc(sizeof(char *));
         }
@@ -84,12 +80,11 @@ int main(void)
         {
             for (int i = 0; i < (HIST_SIZE - 1); i++)
             {
-                // printf("Moving %d to %d\n", i + 1, i);
                 hist[i] = hist[i + 1];
             }
             strcpy(hist[histc], &line[0]);
         }
-        // printf("strlen(%d)\n", len);
+
         argc = 0;
         start = -1;
         background = 0;
@@ -118,7 +113,6 @@ int main(void)
             // handle newline trailing space
             if (i == (len - 1))
             {
-                // line[i] = '\0';
                 argc++;
                 start = -1;
                 if (line[i - 1] == '&')
@@ -127,11 +121,6 @@ int main(void)
                 }
             }
         }
-        // re = fscanf(stdin, "%s", args[0]);
-        // for (int i = 0; i < argc; i++)
-        // {
-        //     printf("%s\n", args[i]);
-        // }
 
         pid = fork();
 
