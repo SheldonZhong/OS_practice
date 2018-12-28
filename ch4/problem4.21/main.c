@@ -99,6 +99,8 @@ int main(int argc, char *argv[])
     pthread_create(&tid_avg, &attr, avgFunc, &param);
     pthread_create(&tid_min, &attr, minFunc, &param);
     pthread_create(&tid_max, &attr, maxFunc, &param);
+
+    // wait for each thread to finish
     pthread_join(tid_avg, NULL);
     pthread_join(tid_min, NULL);
     pthread_join(tid_max, NULL);
