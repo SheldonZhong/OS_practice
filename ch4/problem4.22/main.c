@@ -5,7 +5,6 @@
 #include <limits.h>
 #include <pthread.h>
 #include <stdlib.h>
-#include <math.h>
 
 int hits = 0;
 
@@ -23,7 +22,7 @@ void *cal_pi(void *param)
         x = frand();
         y = frand();
 
-        if (sqrt(x * x + y * y) < 1)
+        if ((x * x + y * y) < 1)
         {
             hits++;
         }
