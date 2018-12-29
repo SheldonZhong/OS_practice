@@ -69,7 +69,6 @@ void *avgFunc(void *param)
 
 int main(int argc, char *argv[])
 {
-    char *arr;
     int buffer[MAX_LENGTH];
     pthread_t tid_avg;
     pthread_t tid_min;
