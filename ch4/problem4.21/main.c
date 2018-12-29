@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include <pthread.h>
+#include <stdlib.h>
 
 #define MAX_LENGTH 100
 
@@ -76,13 +77,11 @@ int main(int argc, char *argv[])
 
     pthread_attr_t attr;
 
-    int temp = 0;
     if (argc > 1)
     {
         for (int i = 1; i < argc; i++)
         {
-            sscanf(argv[i], "%d", &temp);
-            buffer[i - 1] = temp;
+            buffer[i - 1] = atoi(argv[i]);
         }
     }
     else
