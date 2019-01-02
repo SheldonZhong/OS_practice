@@ -31,7 +31,7 @@ class Reply implements Runnable {
 
 			// close the socket and resume listening for more connections
 			client.close();
-} catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 		}
 
