@@ -8,11 +8,11 @@
 
 #define MAX_LENGTH 100
 
-struct prog_param
+typedef struct
 {
     int *arr;
     int end;
-};
+} Parameters;
 
 int avg = 0;
 int min = 0;
@@ -20,7 +20,7 @@ int max = 0;
 
 void *maxFunc(void *param)
 {
-    struct prog_param *s = param;
+    Parameters *s = param;
     int end = s->end;
     int maxl = INT_MIN;
     for (int i = 0; i < end; i++)
@@ -37,7 +37,7 @@ void *maxFunc(void *param)
 
 void *minFunc(void *param)
 {
-    struct prog_param *s = param;
+    Parameters *s = param;
     int end = s->end;
     int minl = INT_MAX;
 
@@ -55,7 +55,7 @@ void *minFunc(void *param)
 
 void *avgFunc(void *param)
 {
-    struct prog_param *s = param;
+    Parameters *s = param;
     int end = s->end;
 
     int sum = 0;
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     {
         return 1;
     }
-    struct prog_param param = {&buffer[0], argc - 1};
+    Parameters param = {&buffer[0], argc - 1};
 
     // get thread attributes
     pthread_attr_init(&attr);
