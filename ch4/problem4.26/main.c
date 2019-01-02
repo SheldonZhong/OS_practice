@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #define BUFFER_SIZE 4096
-// Maximum input: 4096 * 32 = 131072
+
 u_int32_t buffer[BUFFER_SIZE];
 
 void *primes(void *param)
