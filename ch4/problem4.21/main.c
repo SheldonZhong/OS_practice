@@ -8,60 +8,43 @@
 
 #define MAX_LENGTH 100
 
-typedef struct
-{
-    int *arr;
-    int end;
-} Parameters;
-
-int avg = 0;
-int min = 0;
-int max = 0;
+int avg, end;
+int max = INT_MIN;
+int min = INT_MAX;
+int *arr;
 
 void *maxFunc(void *param)
 {
-    Parameters *s = param;
-    int end = s->end;
-    int maxl = INT_MIN;
     for (int i = 0; i < end; i++)
     {
-        if (maxl < s->arr[i])
+        if (max < arr[i])
         {
-            maxl = s->arr[i];
+            max = arr[i];
         }
     }
 
-    max = maxl;
     pthread_exit(0);
 }
 
 void *minFunc(void *param)
 {
-    Parameters *s = param;
-    int end = s->end;
-    int minl = INT_MAX;
-
     for (int i = 0; i < end; i++)
     {
-        if (minl > s->arr[i])
+        if (min > arr[i])
         {
-            minl = s->arr[i];
+            min = arr[i];
         }
     }
-
-    min = minl;
+    
     pthread_exit(0);
 }
 
 void *avgFunc(void *param)
 {
-    Parameters *s = param;
-    int end = s->end;
-
     int sum = 0;
     for (int i = 0; i < end; i++)
     {
-        sum += s->arr[i];
+        sum += arr[i];
     }
 
     avg = sum / end;
@@ -88,15 +71,17 @@ int main(int argc, char *argv[])
     {
         return 1;
     }
-    Parameters param = {&buffer[0], argc - 1};
+
+    arr = &buffer[0];
+    end = argc - 1;
 
     // get thread attributes
     pthread_attr_init(&attr);
 
-    // create a thread
-    pthread_create(&tid_avg, &attr, avgFunc, &param);
-    pthread_create(&tid_min, &attr, minFunc, &param);
-    pthread_create(&tid_max, &attr, maxFunc, &param);
+    // create threads
+    pthread_create(&tid_avg, &attr, avgFunc, NULL);
+    pthread_create(&tid_min, &attr, minFunc, NULL);
+    pthread_create(&tid_max, &attr, maxFunc, NULL);
 
     // wait for each thread to finish
     pthread_join(tid_avg, NULL);
