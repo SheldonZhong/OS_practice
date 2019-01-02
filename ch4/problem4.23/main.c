@@ -13,6 +13,11 @@ double frand()
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2)
+    {
+        printf("should include your argument\n");
+        return 1;
+    }
 	/* sequential code */
 	srand(time(NULL));
 	int total = atoi(argv[1]);

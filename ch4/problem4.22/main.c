@@ -32,6 +32,11 @@ void *cal_pi(void *param)
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2)
+    {
+        printf("should include your argument\n");
+        return 1;
+    }
     srand(time(NULL));
     pthread_t tid;
     pthread_attr_t attr;
