@@ -6,6 +6,19 @@
 #include <pthread.h>
 #include <stdlib.h>
 
+#define CONSTRAINT_ROW_OFFSET 0
+#define CONSTRAINT_COLUMN_OFFSET 9 + CONSTRAINT_ROW_OFFSET
+#define CONSTRAINT_GRID_OFFSET 9 + CONSTRAINT_COLUMN_OFFSET
+#define CONSTRAINT_DIAGONAL1_OFFSET CONSTRAINT_SUDOKU
+#define CONSTRAINT_DIAGONAL2_OFFSET CONSTRAINT_DIAGONAL1_OFFSET + 1
+
+#define CONSTRAINT_SUDOKU 9 + CONSTRAINT_GRID_OFFSET
+#define CONSTRAINT_SUDOKU_DIAG CONSTRAINT_DIAGONAL2_OFFSET + 1
+
+// variations would be add extra constraints on diagonal
+#define SUDOKU_RULE CONSTRAINT_SUDOKU
+// #define SUDOKU_RULE CONSTRAINT_SUDOKU_DIAG
+
 typedef enum
 {
     ROW,
@@ -40,7 +53,8 @@ void *valid_worker(void *param)
         {
             result |= (1 << *p);
         }
-        results[params->column] = result;
+        results[params->column + CONSTRAINT_ROW_OFFSET
+    ] = result;
         break;
 
     case COLUMN:
@@ -50,7 +64,7 @@ void *valid_worker(void *param)
             cell = row[params->row];
             result |= (1 << cell);
         }
-        results[params->row + 9] = result;
+        results[params->row + CONSTRAINT_COLUMN_OFFSET] = result;
         break;
 
     case DIAGONAL1:
@@ -60,7 +74,7 @@ void *valid_worker(void *param)
             cell = row[i];
             result |= (1 << cell);
         }
-        results[27] = result;
+        results[CONSTRAINT_DIAGONAL1_OFFSET] = result;
         break;
 
     case DIAGONAL2:
@@ -70,7 +84,7 @@ void *valid_worker(void *param)
             cell = row[8 - i];
             result |= (1 << cell);
         }
-        results[28] = result;
+        results[CONSTRAINT_DIAGONAL2_OFFSET] = result;
         break;
 
     case GRID:
@@ -81,7 +95,7 @@ void *valid_worker(void *param)
             cell = row[params->row + i % 3];
             result |= (1 << cell);
         }
-        results[((params->column / 3) * 3) + params->row / 3 + 18] = result;
+        results[((params->column / 3) * 3) + params->row / 3 + CONSTRAINT_GRID_OFFSET] = result;
         break;
 
     default:
@@ -125,16 +139,16 @@ int main(int argc, char *argv[])
             param->type = GRID;
             param->column = i;
             param->row = j;
-            params[i / 3 * 3 + j / 3 + 18] = param;
+            params[i / 3 * 3 + j / 3 + CONSTRAINT_GRID_OFFSET] = param;
         }
     }
     param = malloc(sizeof(Parameters));
     param->type = DIAGONAL1;
-    params[27] = param;
+    params[CONSTRAINT_DIAGONAL1_OFFSET] = param;
 
     param = malloc(sizeof(Parameters));
     param->type = DIAGONAL2;
-    params[28] = param;
+    params[CONSTRAINT_DIAGONAL2_OFFSET] = param;
 
     FILE *fp = fopen("sudoku.txt", "r");
     if (fp == NULL)
@@ -154,10 +168,10 @@ int main(int argc, char *argv[])
 
     pthread_attr_init(&attr);
 
-    for (int i = 0; i < 29; i++)
+    for (int i = 0; i < SUDOKU_RULE; i++)
         pthread_create(&tid[i], &attr, valid_worker, params[i]);
 
-    for (int i = 0; i < 29; i++)
+    for (int i = 0; i < SUDOKU_RULE; i++)
         pthread_join(tid[i], NULL);
 
     for (int i = 0; i < 9; i++)
@@ -169,7 +183,7 @@ int main(int argc, char *argv[])
         printf("\n");
     }
 
-    for (int i = 0; i < 29; i++)
+    for (int i = 0; i < SUDOKU_RULE; i++)
     {
         if (results[i] != mask)
         {
@@ -178,4 +192,12 @@ int main(int argc, char *argv[])
         }
     }
     printf("Valid sudoku\n");
+    if (SUDOKU_RULE == CONSTRAINT_SUDOKU)
+    {
+        printf("Sudoku without diagonal\n");
+    }
+    else
+    {
+        printf("Sudoku with diagonal check\n");
+    }
 }
