@@ -3,11 +3,12 @@
 
 int allocate_map(void)
 {
+    pthread_mutex_lock(&mutex);
     for (int i = 0; i < PID_LEN; i++)
     {
         PID[i] = 0;
     }
-
+    pthread_mutex_unlock(&mutex);
     return 1;
 }
 
