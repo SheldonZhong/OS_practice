@@ -1,10 +1,10 @@
+#ifndef PID_MANAGER_H__
+#define PID_MANAGER_H__
+
 #include <pthread.h>
 #define MIN_PID 300
 #define MAX_PID 5000
 #define PID_LEN MAX_PID - MIN_PID + 1
-
-pthread_mutex_t mutex;
-int PID[MAX_PID - MIN_PID];
 
 /* 
 Creates and initializes a data structure for representing pids; 
@@ -27,3 +27,5 @@ void release_pid(int);
 Init for mutex lock
 */
 void init_pid(void);
+
+#endif

@@ -1,6 +1,9 @@
 #include "pid_manager.h"
 #include <stdio.h>
 
+pthread_mutex_t mutex;
+int PID[MAX_PID - MIN_PID];
+
 int allocate_map(void)
 {
     pthread_mutex_lock(&mutex);
